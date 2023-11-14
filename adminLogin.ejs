@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login Page</title>
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Admin Login</h1>
+    <form method="POST" action="/auth/adminlogin" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="SecurityCode">Security_Code:</label>
+        <input type="password" id="SecurityCode" name="SecurityCode" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <script>
+    function validateForm() {
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('SecurityCode');
+      const username = usernameInput.value.trim();
+      const SecurityCode = passwordInput.value.trim();
+
+      if (!username || !SecurityCode) {
+        console.error('Username and password are required.');
+        return false;
+      }
+
+      return true; 
+    }
+  </script>
+</body>
+</html>
