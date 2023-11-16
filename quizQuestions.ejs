@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: <%= quiz ? quiz.title : 'Untitled Quiz' %></title>
+</head>
+<body>
+  <% if (quiz) { %>
+  <h1>Quiz: <%= quiz.title %></h1>
+
+  <form method="POST" action="/auth/quizQuestions/<%= quiz._id %>" onsubmit="return validateForm()">
+    <div class="form-group">
+      <label for="questionText">Enter Question:</label>
+      <input type="text" id="questionText" name="questionText" required>
+    </div>
+
+    <!-- Adjusted input names for each option -->
+    <div class="form-group">
+      <label for="option1Text">Option 1:</label>
+      <input type="text" id="option1Text" name="options[0][text]" required>
+      <label for="option1Correct">Correct Option:</label>
+      <input type="checkbox" id="option1Correct" name="options[0][isCorrect]">
+    </div>
+
+    <div class="form-group">
+      <label for="option2Text">Option 2:</label>
+      <input type="text" id="option2Text" name="options[1][text]" required>
+      <label for="option2Correct">Correct Option:</label>
+      <input type="checkbox" id="option2Correct" name="options[1][isCorrect]">
+    </div>
+
+    <div class="form-group">
+      <label for="option3Text">Option 3:</label>
+      <input type="text" id="option3Text" name="options[2][text]" required>
+      <label for="option3Correct">Correct Option:</label>
+      <input type="checkbox" id="option3Correct" name="options[2][isCorrect]">
+    </div>
+
+    <div class="form-group">
+      <label for="option4Text">Option 4:</label>
+      <input type="text" id="option4Text" name="options[3][text]" required>
+      <label for="option4Correct">Correct Option:</label>
+      <input type="checkbox" id="option4Correct" name="options[3][isCorrect]">
+    </div>
+
+    <!-- Repeat this structure for other options (option3, option4) -->
+    <!-- ... -->
+
+    <div class="form-group">
+      <label for="correctOption">Correct Option (1-4):</label>
+      <input type="number" id="correctOption" name="correctOption" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="marks">Marks: </label>
+      <input type="number" id="marks" name="marks" required>
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+
+
+  <h2>Questions:</h2>
+  <ul>
+    <% questions.forEach((question, index) => { %>
+      <li>
+        <p>Question <%= index + 1 %></p>
+        <p><%= question.questionText %></p> <!-- Corrected from 'question.text' -->
+        <p>Options:</p>
+        <ul>
+          <% question.options && question.options.forEach((option) => { %>
+            <li><%= option.text %></li> <!-- Adjusted from 'option.text' -->
+          <% }); %>
+        </ul>
+        <p>Correct Option: <%= question.correctOption %></p>
+        <p>Marks: <%= question.marks %></p> 
+      </li>
+  
+
+  <form method="POST" action="/auth/quizQuestions/<%= quiz._id %>/<%= question._id %>?_method=PUT">
+    <input type="hidden" name="_method" value="PUT">
+    <button type="submit">Edit</button>
+  </form>
+  <form method="POST" action="/auth/quizQuestions/<%=quiz._id %>/<%= question._id %>?_method=DELETE">
+    <input type="hidden" name="_method" value="POST">
+    <button type="submit">Delete</button>
+  </form>
+  <% }); %>
+</ul>
+  <!-- Add a link to go back to the main page -->
+  <a href="/auth/quizMain">Back to Quiz Main</a>
+
+  <% } else { %>
+    <p>No quiz found.</p>
+  <% } %>
+
+
+  <script>
+    function validateForm() {
+      const questionTextInput = document.getElementById('questionText');
+      const optionInputs = document.querySelectorAll('input[name^="option"]');
+      const correctOptionInput = document.getElementById('correctOption');
+      const marksInput = document.getElementById('marks');
+
+      const questionText = questionTextInput.value.trim();
+      const options = Array.from(optionInputs).map(input => input.value.trim());
+      const correctOption = correctOptionInput.value.trim();
+      const marks = marksInput.value.trim();
+
+      if (!questionText || options.some(option => !option) || !correctOption || !marks) {
+        alert('Please fill in all fields.');
+        return false;
+      }
+
+       if (correctOption < 1 || correctOption > 4) {
+         alert('Correct option must be a number between 1 and 4.');
+         return false;
+       }
+
+       if(marks < 0) {
+        alert('Marks field is incorrect!');
+        return false;
+       }
+
+      // You can add additional validation if needed.
+
+      return true;
+    }
+  </script>
+</body>
+</html> 
