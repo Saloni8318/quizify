@@ -1,0 +1,174 @@
+const Question = require('../models/question');
+const newQuiz = require('../models/quizMain');
+const TrueFalseQuestion = require('../models/questionTF')
+
+const viewQuestionsForQuiz = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const quiz = await newQuiz.findById(quizId).populate('questions');
+
+    if (!quiz) {
+      return res.status(404).send('Quiz not found');
+    }
+
+    const questions = quiz.questions || [];
+
+    if (quiz.quizType === 'multiple_choice') {
+      // Render the page for multiple-choice questions
+      res.render('quizQuestions', { quiz, questions });
+    } else if (quiz.quizType === 'true_false') {
+      // Render the page for true/false questions
+      res.render('trueFalseQ', { quiz, questions });
+    } else {
+      // Handle other question types if needed
+      res.status(400).send('Unsupported quiz type');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching quiz questions');
+  }
+};
+
+
+const saveQuestion = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const { questionText, options, correctOption, marks } = req.body;
+
+    const optionObjects = Object.keys(options).map((key) => ({
+      text: options[key].text,
+      isCorrect: options[key].isCorrect === 'on', // Checkbox 'checked' value is sent as 'on'
+    }));
+
+    const question = new Question({
+      questionText,
+      options: optionObjects,
+      correctOption,
+      quiz: quizId,
+      marks,
+    });
+
+    await question.save();
+
+    const quiz = await newQuiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).send('Quiz not found');
+    }
+
+    quiz.questions.push(question._id);
+    await quiz.save();
+
+    res.redirect(`/auth/quizQuestions/${quizId}?newQuestion=${question._id}`);
+  } catch (error) {
+    console.error('Quiz creation error:', error);
+    res.status(500).send('Quiz creation failed: ' + error.message);
+  }
+};
+
+
+const saveTFQuestion = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const { questionText, correctOption, marks } = req.body;
+
+    // Assuming options are not needed for true/false questions
+
+    const question = new TrueFalseQuestion({
+      questionText,
+      correctOption,
+      marks,
+    });
+
+    await question.save();
+
+    const quiz = await newQuiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).send('Quiz not found');
+    }
+
+    quiz.questions.push(question._id);
+    await quiz.save();
+
+    res.redirect(`/auth/quizQuestions/${quizId}?newQuestion=${question._id}`);
+  } catch (error) {
+    console.error('True/False question creation error:', error);
+    res.status(500).send('True/False question creation failed: ' + error.message);
+  }
+};
+
+
+
+const deleteQuestion = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const questionId = req.params.questionId;
+
+    // Remove the question from the database
+    await Question.findByIdAndDelete(questionId);
+
+    // Fetch the remaining questions for the quiz
+    const quiz = await newQuiz.findById(quizId).populate('questions');
+
+    if (!quiz) {
+      return res.status(404).send('Quiz not found');
+    }
+
+    const questions = quiz.questions || [];
+    res.render('quizQuestions', { quiz, questions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting the question');
+  }
+};
+
+
+
+const editQuestion = async (req, res) => {
+  try {
+    const quizId = req.params.quizId;
+    const { questionText, options, correctOption, marks } = req.body;
+    const questionId = req.params.questionId;
+
+    // Find the question by its ID
+    const question = await Question.findById(questionId);
+
+    if (!question) {
+      return res.status(404).send('Question not found');
+    }
+
+    // Perform the necessary updates
+    question.questionText = questionText;
+    question.options = options; // Ensure options is an array of objects
+    //question.correctOption = correctOption;
+    // Convert correctOption to a number if needed
+    // const parsedCorrectOption = parseInt(correctOption, 10);
+    // console.log('correctOption value:', correctOption);
+    // const parsedCorrectOption = parseInt(correctOption, 10);
+    // console.log('parsedCorrectOption:', parsedCorrectOption);
+
+    // // Check if the parsed value is a valid number
+    // if (!isNaN(parsedCorrectOption)) {
+    //   question.correctOption = parsedCorrectOption;
+    // } else {
+    //   // If not a valid number, handle it as needed, perhaps sending an error response
+    //   return res.status(400).send('Correct option should be a number');
+    // }
+
+    question.marks = marks;
+
+    await question.save();
+
+    res.send('Question edited successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error editing the question');
+  }
+};
+
+module.exports = {
+  saveQuestion,
+  viewQuestionsForQuiz,
+  deleteQuestion,
+  editQuestion,
+  saveTFQuestion,
+};
