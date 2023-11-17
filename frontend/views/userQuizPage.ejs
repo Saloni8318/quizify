@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User</title>
+</head>
+
+<body>
+  <%- include('header') -%>
+  <h1>User</h1>
+
+  <h1>Quiz List</h1>
+  <ul>
+    <% if (quizzes && quizzes.length> 0) { %>
+      <% quizzes.forEach(quiz=> { %>
+        <li>
+          <h3>
+            <%= quiz.title %>
+          </h3>
+          <p>Time Limit: <%= quiz.timeLimit %>
+          </p>
+          <p>Score: <%= quiz.score %>
+          </p>
+          <p>Number of Questions: <%= quiz.numQuestions %>
+          </p>
+          <p>Quiz Type: <%= quiz.quizType %>
+          </p>
+          <a href="/auth/userQuizPage/<%= quiz._id %>">View Quiz</a>
+        </li>
+
+        <% }); %>
+          <% } else { %>
+            <p>No quizzes available.</p>
+            <% } %>
+  </ul>
+
+</body>
+
+</html>

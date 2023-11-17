@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: <%= quiz ? quiz.title : 'Untitled Quiz' %>
+    </title>
+    <style>
+     
+        #questionSection {
+            display: none;
+        }
+
+        #resultSection {
+            display: none;
+        }
+
+        #scoreDisplay {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <% if (quiz) { %>
+        <h1>User Quiz: <%= quiz.title %>
+        </h1>
+        <button id="startQuizButton">Start Quiz</button>
+        <div id="questionSection">
+            <h2>Questions:</h2>
+            <form id="quizForm">
+                <% questions.forEach((question, index)=> { %>
+                    <div>
+                        <p>---------------------------------------------------------------------</p>
+                        <p>Question <%= index + 1 %>
+                        </p>
+                        <p>
+                            <%= question.questionText %>
+                        </p>
+                        <p>Options:</p>
+                        <ul>
+                            <% question.options && question.options.forEach((option, optIndex)=> { %>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="question<%= index %>" value="<%= optIndex %>">
+                                        <%= option.text %>
+                                    </label>
+                                </li>
+                                <% }); %>
+                        </ul>
+                        <p>Marks: <%= question.marks %>
+                        </p>
+                    </div>
+                    <% }); %>
+                        <button id="submitQuizButton">Submit Quiz</button>
+                        <p id="timeRemaining">Time Remaining for the Quiz: <span id="timeDisplay"></span> seconds</p>
+                        <p id="quizSubmitted" style="display: none;">Quiz submitted! Your score is: <span
+                                id="finalScore"></span></p>
+            </form>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection">
+            <h2>Quiz Results</h2>
+            <div id="questionsAndAnswers"></div>
+        </div>
+
+        <% } else { %>
+            <p>No quiz found.</p>
+            <% } %>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const startQuizButton = document.getElementById("startQuizButton");
+                        const quizForm = document.getElementById("quizForm");
+                        const resultSection = document.getElementById("resultSection");
+                        const questionsAndAnswers = document.getElementById("questionsAndAnswers");
+                        const finalScore = document.getElementById("finalScore");
+                        const timeDisplay = document.getElementById("timeDisplay");
+
+                        // Ensure the elements are found
+                        console.log('startQuizButton:', startQuizButton);
+                        console.log('quizForm:', quizForm);
+                        console.log('resultSection:', resultSection);
+                        console.log('questionsAndAnswers:', questionsAndAnswers);
+                        console.log('finalScore:', finalScore);
+                        console.log('timeDisplay:', timeDisplay);
+
+                        let timer;
+                        let timeLeft = <%= quiz.timeLimit %>; 
+                        // Function to handle quiz submission
+                        async function submitQuiz() {
+                            console.log('Submitting quiz...');
+
+                            const formData = new FormData(quizForm);
+                            const answers = [];
+                            const questionIds = [
+    <% questions.forEach(question => { %>
+                                "<%= question._id %>",
+    <% }); %>
+];
+
+                            // Track which questions have been answered
+                            const answeredQuestions = new Set();
+
+                            // Iterate over form data entries
+                            for (let [key, value] of formData.entries()) {
+                                if (key.startsWith("question")) {
+                                    const questionIndex = parseInt(key.replace("question", ""), 10);
+                                    const selectedOption = parseInt(value, 10);
+
+                                    
+                                    console.log(`Processing question ${questionIndex + 1} with selectedOption:`, selectedOption);
+
+                                    if (!isNaN(selectedOption) && selectedOption >= 0) {
+                                       
+                                        answers.push({ questionId: questionIds[questionIndex], selectedOption });
+                                        answeredQuestions.add(questionIndex);
+                                    } else {
+                                        console.error(`Error processing question ${questionIndex + 1}: selectedOption is not a valid number. Value:`, value);
+                                    }
+                                }
+                            }
+
+                            // Check if at least one question is answered
+                            if (answeredQuestions.size === 0) {
+                                alert("Please answer at least one question before submitting.");
+                                return;
+                            }
+
+                            const quizId = "<%= quiz._id %>";
+
+                            console.log('Request Body:', JSON.stringify({ quizId, answers }));
+                            console.log('Answers:', answers);
+
+                            try {
+                                const response = await fetch('/auth/userQuestion', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ quizId, answers }),
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+
+                                const contentType = response.headers.get('content-type');
+                                if (contentType && contentType.includes('application/json')) {
+                                    const data = await response.json();
+                                    console.log('Quiz submitted successfully. Response:', data);
+                                    displayResults(data.questions, answers, data.score);
+                                } else {
+                                    console.error('Unexpected response format:', await response.text());
+                                }
+                            } catch (error) {
+                                console.error('Fetch error:', error.message);
+                            }
+                        }
+
+
+                        // Event listener for starting the quiz
+                        if (startQuizButton) {
+                            startQuizButton.addEventListener("click", function () {
+                                startQuizButton.style.display = "none";
+                                document.getElementById("questionSection").style.display = "block";
+
+                                // Timer function
+                                timer = setInterval(function () {
+                                    if (timeLeft <= 0) {
+                                        clearInterval(timer);
+                                        submitQuiz();
+                                    } else {
+                                        timeDisplay.innerText = timeLeft;
+                                        timeLeft--;
+                                    }
+                                }, 1000);
+                            });
+                        } else {
+                            console.error('startQuizButton not found');
+                        }
+
+                        // Event listener for manually submitting the quiz
+                        const submitQuizButton = document.getElementById("submitQuizButton");
+                        if (submitQuizButton) {
+                            submitQuizButton.addEventListener("click", function (event) {
+                                event.preventDefault(); // Prevent the default form submission
+                                clearInterval(timer); // Stop the timer
+                                submitQuiz(); // Manually submit the quiz
+                            });
+                        } else {
+                            console.error('submitQuizButton not found');
+                        }
+
+                        // Function to display questions and selected options in the result section
+                        function displayResults(questions, answers, score) {
+                            console.log('Displaying results. Score:', score);
+                            alert("Your score is : " + score);
+
+                            if (questionsAndAnswers && finalScore) {
+                                // Display questions and selected options
+                                questionsAndAnswers.innerHTML = "";
+                                questions.forEach((question, index) => {
+                                    const answer = answers[index];
+                                    if (answer && 'selectedOption' in answer && answer.selectedOption !== undefined) {
+                                        const selectedOptionIndex = answer.selectedOption;
+                                        const selectedOption = question.options[selectedOptionIndex].text;
+                                        const correctOptionIndex = question.correctOption;
+                                        const rightOption = question.options[correctOptionIndex-1].text;
+                                        let Obtainedmarks = 0;
+                                         if((selectedOptionIndex+1)  === correctOptionIndex ) {
+                                            Obtainedmarks = question.marks;
+                                         }
+                                        questionsAndAnswers.innerHTML += `
+                <div>
+                    <p>---------------------------------------------------------------------</p>
+                    <p>Question ${index + 1}</p>
+                    <p>${question.questionText}</p>
+                    <p>Selected Option: (${selectedOptionIndex+1})${selectedOption}</p>
+                    <p>Correct Option: (${correctOptionIndex})${rightOption}</p>
+                    <p>Marks obtained: ${Obtainedmarks}</p>
+                    <p>Marks: ${question.marks}</p>
+                </div>
+            `;
+                                    } else {
+                                        console.error(`Error displaying question ${index + 1}: Invalid answer format. Answer:`, answer);
+                                    }
+                                });
+
+                                console.log('finalScore:', finalScore);
+
+                                if (finalScore) {
+                                    // Display score with additional styling
+                                    finalScore.style.display = 'block';
+                                    finalScore.innerHTML = `<p class="score-text">Your score is: ${score}/p>`;
+                                    console.log('Score displayed successfully:', score);
+
+                                    // Show the result section
+                                    resultSection.style.display = "block";
+
+                                    // Hide the quiz form (optional)
+                                    const quizForm = document.getElementById("quizForm");
+                                    if (quizForm) {
+                                        quizForm.style.display = "none";
+                                    } else {
+                                        console.error('Quiz form not found');
+                                    }
+                                } else {
+                                    console.error('finalScore element not found');
+                                }
+                            } else {
+                                console.error('Elements not found:', questionsAndAnswers, finalScore);
+                            }
+                        }
+
+                    });
+                </script>
+</body>
+
+</html>
