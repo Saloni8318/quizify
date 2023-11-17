@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/register.css"> 
+  <style>
+    .error-message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1>Register</h1>
+    <form method="POST" action="/auth/register" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <p class="error-message" id="usernameError"></p>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <p class="error-message" id="emailError"></p>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <div class="password-container">
+          <input type="password" id="password" name="password" required>
+          <span id="togglePassword" onclick="togglePassword()">🚫</span>
+        </div>
+        <p class="error-message" id="passwordError"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password:</label>
+        <div class="password-container">
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+          <span id="toggleConfirmPassword" onclick="toggleConfirmPassword()">🚫</span>
+        </div>
+        <p class="error-message" id="confirmPasswordError"></p>
+      </div>
+
+      <!-- Display a general error message if it exists -->
+      <% if (errorMessage) { %>
+        <p class="error-message"><%= errorMessage %></p>
+      <% } %>
+
+      <button type="submit">Register</button>
+    </form>
+    <p style="text-align: center;" id="loginlink">Already have an account?<a style="color:darkblue;" href="/auth/userLogin">Login here</a>.</p>
+  <p style="text-align: center;" id="adminlink">If Admin ?<a style="color:darkblue;" href="/auth/adminLogin">Login here</a>.</p>
+  </div>
+   
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('togglePassword');
+      togglePasswordVisibility(passwordInput, toggleIcon);
+    }
+
+    function toggleConfirmPassword() {
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const toggleIcon = document.getElementById('toggleConfirmPassword');
+      togglePasswordVisibility(confirmPasswordInput, toggleIcon);
+    }
+
+    function togglePasswordVisibility(inputElement, toggleIcon) {
+      if (inputElement.type === "password") {
+        inputElement.type = "text";
+        toggleIcon.textContent = "👁";
+      } else {
+        inputElement.type = "password";
+        toggleIcon.textContent = "🚫";
+      }
+    }
+
+    function validateForm() {
+      const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const username = usernameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const confirmPassword = confirmPasswordInput.value.trim();
+
+      const letterCheck = /[a-zA-Z]/;
+      const numberCheck = /[0-9]/;
+      const specialCharacterCheck = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+      const minLength = 6;
+
+      const usernameError = document.getElementById('usernameError');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+      usernameError.textContent = '';
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      confirmPasswordError.textContent = '';
+
+      if (password !== confirmPassword) {
+        confirmPasswordError.textContent = "Passwords do not match.";
+        return false;
+      }
+
+      if (!username) {
+        usernameError.textContent = 'Username is required.';
+        return false;
+      }
+
+      if (!email) {
+        emailError.textContent = 'Email is required.';
+        return false;
+      }
+
+      if (!password) {
+        passwordError.textContent = 'Password is required.';
+        return false;
+      }
+
+      if (password.length < minLength) {
+        passwordError.textContent = `Password must be at least ${minLength} characters long.`;
+        return false;
+      }
+        
+      if (!letterCheck.test(password)) {
+        passwordError.textContent = "Password must contain at least one letter.";
+        return false;
+      }
+
+      if (!numberCheck.test(password)) {
+        passwordError.textContent = "Password must contain at least one number.";
+        return false;
+      }
+
+      if (!specialCharacterCheck.test(password)) {
+        passwordError.textContent = "Password must contain at least one special character.";
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>
