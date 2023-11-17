@@ -1,0 +1,90 @@
+/* Apply styles to the body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: rgb(211, 211, 211);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#loginlink,
+#adminlink {
+  text-align: right;
+  font-weight: 200;
+  color: black;
+  margin-top: 10px; /* Adjust this margin to your preference */
+}
+
+/* Style the register container */
+.register-container {
+  background-color: grey;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Style the heading */
+.register-container h1 {
+  color: darkblue;
+  font-size: 94px 100px;
+  font-family: sans-serif;
+}
+
+/* Style the form elements */
+.form-group {
+  margin: 30px 30px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid darkblue;
+  border-radius: 3px;
+}
+
+/* Style the register button */
+button[type="submit"] {
+  background-color: darkblue;
+  color: #fff;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Style the error message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.password-container {
+  position: relative;
+}
+
+#togglePassword,
+#toggleConfirmPassword {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
