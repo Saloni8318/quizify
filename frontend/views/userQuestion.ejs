@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/userQuizPage.css">
     <title>Quiz: <%= quiz ? quiz.title : 'Untitled Quiz' %>
     </title>
     <style>
@@ -24,19 +25,20 @@
 
 <body>
     <% if (quiz) { %>
-        <h1>User Quiz: <%= quiz.title %>
+        <h1>Quiz: <%= quiz.title %>
         </h1>
-        <button id="startQuizButton">Start Quiz</button>
-        <div id="questionSection">
+        <div id="introSection">
+            <%-include('quizInstructions')-%>
+            <button id="startQuizButton">Start Quiz</button>
+        </div>
+        <div id="questionSection"  style="display: none;">
             <h2>Questions:</h2>
             <form id="quizForm">
                 <% questions.forEach((question, index)=> { %>
-                    <div>
-                        <p>---------------------------------------------------------------------</p>
-                        <p>Question <%= index + 1 %>
-                        </p>
-                        <p>
+                    <div class="quiz-box">
+                        <p style="font-weight: bold;">Question <%= index + 1 %> : <par style="font-weight: bold;">
                             <%= question.questionText %>
+                        </par>
                         </p>
                         <p>Options:</p>
                         <ul>
@@ -61,7 +63,7 @@
         </div>
 
         <!-- Result Section -->
-        <div id="resultSection">
+        <div id="resultSection"  style="display: none;">
             <h2>Quiz Results</h2>
             <div id="questionsAndAnswers"></div>
         </div>
@@ -75,17 +77,11 @@
                         const startQuizButton = document.getElementById("startQuizButton");
                         const quizForm = document.getElementById("quizForm");
                         const resultSection = document.getElementById("resultSection");
+                        const introSection = document.getElementById("introSection");
                         const questionsAndAnswers = document.getElementById("questionsAndAnswers");
                         const finalScore = document.getElementById("finalScore");
                         const timeDisplay = document.getElementById("timeDisplay");
-
-                        // Ensure the elements are found
-                        console.log('startQuizButton:', startQuizButton);
-                        console.log('quizForm:', quizForm);
-                        console.log('resultSection:', resultSection);
-                        console.log('questionsAndAnswers:', questionsAndAnswers);
-                        console.log('finalScore:', finalScore);
-                        console.log('timeDisplay:', timeDisplay);
+                        const quizContainer = document.getElementById('quizContainer');
 
                         let timer;
                         let timeLeft = <%= quiz.timeLimit %>; 
@@ -162,9 +158,10 @@
 
 
                         // Event listener for starting the quiz
-                        if (startQuizButton) {
+                        if (startQuizButton && introSection && questionSection && resultSection) {
                             startQuizButton.addEventListener("click", function () {
                                 startQuizButton.style.display = "none";
+                                introSection.style.display = "none";
                                 document.getElementById("questionSection").style.display = "block";
 
                                 // Timer function
@@ -214,10 +211,8 @@
                                             Obtainedmarks = question.marks;
                                          }
                                         questionsAndAnswers.innerHTML += `
-                <div>
-                    <p>---------------------------------------------------------------------</p>
-                    <p>Question ${index + 1}</p>
-                    <p>${question.questionText}</p>
+                <div class="quiz-box">
+                    <p style="font-weight: bold;">Question ${index + 1} :  <par style="font-weight: bold;">${question.questionText}</par></p>
                     <p>Selected Option: (${selectedOptionIndex+1})${selectedOption}</p>
                     <p>Correct Option: (${correctOptionIndex})${rightOption}</p>
                     <p>Marks obtained: ${Obtainedmarks}</p>
