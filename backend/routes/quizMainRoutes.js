@@ -7,21 +7,22 @@ const questionController = require('../controllers/questionController');
 //const userQuestionController = require('../controllers/userQuizController');
 
 // Fetch quizzes and render the quizMain page
-router.get('/quizMain', quizController.fetchQuizzes);
+router.get('/adminQuizPage', quizController.fetchQuizzes);
 
 // POST request to create a new quiz
-router.post('/quizMain', quizController.createNewQuiz);
+router.post('/adminQuizPage', quizController.createNewQuiz);
 
+router.post('/subjectWiseQuiz/:subject', quizController.createNewQuiz);
 // Display questions for a specific quiz
 //router.get('/quizMain/:quizId', quizMainController.viewQuestions);
-router.get('/quizMain/:quizId', questionController.viewQuestionsForQuiz);
+router.get('/adminQuizPage/:quizId/:subject', questionController.viewQuestionsForQuiz);
 // Display questions for a specific quiz
 
 router.get('/quizQuestions/:quizId', questionController.viewQuestionsForQuiz);
 //router.get('/quizQuestions/:quizId',questionController.saveQuestion)
 router.post('/quizQuestions/:quizId',questionController.saveQuestion)
 
-router.delete('/quizMain/:quizId', quizController.deleteQuiz);
+router.delete('/adminQuizPage/:quizId', quizController.deleteQuiz);
 
 router.delete('/quizQuestions/:quizId/:questionId', questionController.deleteQuestion);
 
@@ -31,9 +32,13 @@ router.get('/userQuizPage/:quizId', userQuizController.userViewQuestionsForQuiz)
 
 router.post('/userQuestion',userQuizController.calculateScore)
 
-router.get('/trueFalseQ/:quizId', questionController.viewQuestionsForQuiz)
+router.get('/subjectWiseQuiz/:subject', quizController.fetchQuizSubjectWise)
 
-router.post('/trueFalseQ/:quizId',questionController.saveTFQuestion)
+router.get('/subWiseQuizUser/:subject', userQuizController.fetchUserQuizzes)
+
+// router.get('/trueFalseQ/:quizId', questionController.viewQuestionsForQuiz)
+
+// router.post('/trueFalseQ/:quizId',questionController.saveTFQuestion)
 
 //router.put('/quizQuestions/:quizId/:questionId', quizController.editQuestion);
 
