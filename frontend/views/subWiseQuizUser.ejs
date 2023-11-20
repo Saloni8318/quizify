@@ -1,0 +1,48 @@
+<!-- subjectPage.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/admin.css">
+    <title>
+        <%= subject %> Quizzes
+    </title>
+</head>
+
+<body>
+    <h1>
+        <%= subject %> Quizzes
+    </h1>
+
+    <% if (quizzes && quizzes.length> 0) { %>
+        <ul>
+            <% quizzes.forEach(quiz=> { %>
+                <div class="quiz-box">
+                <li>
+                    <h3>
+                        <%= quiz.title %>
+                    </h3>
+                    <p>Time Limit: <%= quiz.timeLimit %>
+                    </p>
+                    <p>Score: <%= quiz.score %>
+                    </p>
+                    <p>Number of Questions: <%= quiz.numQuestions %>
+                    </p>
+                    <p>Quiz Type: <%= quiz.quizType %>
+                    </p>
+                    
+                    <a href="/auth/quizMain/<%= quiz._id %>/<%= quiz.subject %>">View Quiz</a>
+                </li>
+                </div>
+                <% }); %>
+        </ul>
+        <% } else { %>
+            <p>No quizzes available for <%= subject %>.</p>
+            <% } %>
+                
+                <a href="/layoutUser">Back to layout</a>
+</body>
+
+</html>
