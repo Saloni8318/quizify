@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/mainpage.css">
+    <link rel="stylesheet" href="/layoutAdmin.css">
+<link rel="stylesheet" href="/navbar.css">
+
+    <title>User_layout</title>
+</head>
+<body>
+    <h1>Quizify</h1>
+    <h2>User</h2>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/css/logo1.jpeg">
+            <img src="/css/logo1.jpeg" alt="Logo" width="30" height="30">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="Mainpage.ejs">Home</a>
+              </li>
+                
+                     <li class="nav-item">
+                    <a class="nav-link" href="/StudyMaterial">Video lectures</a>
+                    
+                    
+                
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/PYQ">PYQ`s</a>
+            </li>
+    
+              <li class="nav-item">
+                <a class="nav-link" href="/Tools/About.ejs">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/Tools/About.ejs">Logout</a>
+              </li>
+              
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="subject-box">
+        <div class="subject">
+            <% const chemistrySubject = "Chemistry"; %>
+            <img src="chem1.jpg" alt="Chemistry Image">
+            <a class="subject-link" href="/auth/subWiseQuizUser/<%= chemistrySubject %>">Click here to view <%= chemistrySubject %> quizzes</a>
+        </div>
+
+        <div class="subject">
+            <% const physicsSubject = "Physics"; %>
+            <img src="physics.jpeg" alt="Physics Image">
+            <a class="subject-link" href="/auth/subWiseQuizUser/<%= physicsSubject %>">Click here to view <%= physicsSubject %> quizzes</a>
+        </div>
+
+        <div class="subject">
+            <% const mathsSubject = "Maths"; %>
+            <img src="maths.jpg" alt="Chemistry Image">
+            <a class="subject-link" href="/auth/subjWiseQuizUser/<%= mathsSubject %>">Click here to view <%= mathsSubject %> quizzes</a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>
