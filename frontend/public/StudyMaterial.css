@@ -1,0 +1,63 @@
+/* studyMaterials.css */
+
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        background-color: lightgrey;
+      } /* Set your desired background color */
+
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+   h1 {
+        font-size: 3rem;
+      text-transform: capitalize;
+      text-shadow:
+        1px 1px 1px gray,
+        2px 2px 1px gray;
+      text-align: center;
+      font-weight: bold;
+      } /* Set your desired heading color */
+
+
+.subject-materials {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: black; /* Set your desired section heading color */
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    color: blue; /* Set your desired link color */
+    text-decoration: none;
+    transition: color 0.3s; /* Add a smooth transition effect for color change */
+}
+
+a:hover {
+    color: #0056b3; /* Set your desired link color on hover */
+    text-decoration: underline;
+}
+
+.subject-materials {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    border-color: #23527c;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+/* Add more styles as needed */
