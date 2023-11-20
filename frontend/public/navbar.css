@@ -1,0 +1,23 @@
+/* navbar.css */
+.navbar {
+    background-color:blue; 
+  }
+  
+  .navbar-brand img {
+    margin-right: 500px; 
+  }
+  
+  .navbar-nav .nav-item {
+    margin-right: 100px; 
+  }
+  
+  .navbar-nav .nav-link {
+    color: red; 
+  }
+  
+  .navbar-toggler-icon {
+    background-color:blue; 
+  }
+  
+  
+  
