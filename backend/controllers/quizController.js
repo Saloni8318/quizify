@@ -2,15 +2,14 @@ const newQuiz = require('../models/quizMain');
 
 // Function to render the quiz page
 const renderQuizMainPage = (req, res) => {
-  res.render('quizMain', { errorMessage: null });
+  res.render('adminQuizPage', { errorMessage: null });
 };
-
 const createNewQuiz = async (req, res) => {
   try {
-    const { title, timeLimit, score, numQuestions, quizType } = req.body;
-    const quiz = new newQuiz({ title, timeLimit, score, numQuestions, quizType });
+    const { title, timeLimit, score, numQuestions, quizType, subject } = req.body;
+    const quiz = new newQuiz({ title, timeLimit, score, numQuestions, quizType, subject });
     await quiz.save();
-    res.redirect('/auth/quizMain');
+    res.redirect(`/auth/subjectWiseQuiz/${subject}`);
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -19,32 +18,47 @@ const createNewQuiz = async (req, res) => {
 
 const fetchQuizzes = async (req, res) => {
   try {
-    // Fetch quizzes from the database
-    const quizzes = await newQuiz.find({});
+    const subject = req.params.subject;
+
+    // Fetch quizzes from the database based on the subject
+    const quizzes = await newQuiz.find({ subject });
 
     // Log the fetched data to the console for debugging
     console.log('Fetched quizzes:', quizzes);
 
     // Render an HTML template to display the quizzes
-    res.render('quizMain', { quizzes, errorMessage: null });
+    res.render('adminQuizPage', { quizzes, errorMessage: null });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching quizzes');
   }
-}
+};
 
 
 const deleteQuiz = async (req, res) => {
   try {
     const quizId = req.params.quizId;
 
-    // Assuming you're using Mongoose, use the Quiz model to find and delete the quiz
     await newQuiz.findByIdAndDelete(quizId);
 
-    res.redirect('/auth/quizMain');
+    res.redirect('/auth/adminQuizPage');
   } catch (error) {
     console.error(error);
     res.status(500).send('Error deleting the quiz');
+  }
+};
+
+
+const fetchQuizSubjectWise = async (req, res) => {
+  const subject = req.params.subject;
+  try {
+    // Fetch quizzes based on the subject
+    const quizzes = await newQuiz.find({ subject });
+
+    res.render('subjectWiseQuiz', { quizzes, subject });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -53,6 +67,6 @@ module.exports = {
   renderQuizMainPage,
   createNewQuiz,
   fetchQuizzes,
- // viewQuestions,
+  fetchQuizSubjectWise,
   deleteQuiz
 };
