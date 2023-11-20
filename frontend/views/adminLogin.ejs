@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login Page</title>
+  <link rel="stylesheet" href="/adminlogin.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Admin Login</h1>
+    <form method="POST" action="/auth/adminlogin" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <p class="error-message" id="usernameError"></p>
+      </div>
+      <div class="form-group">
+        <label for="SecurityCode">Security Code:</label>
+        <input type="password" id="SecurityCode" name="SecurityCode" required>
+        <p class="error-message" id="passwordError"></p>
+      </div>
+  
+     <!-- Display a general error message if it exists -->
+     <% if (errorMessage) { %>
+      <p id="errorM" class="error-message"><%= errorMessage %></p>
+    <% } %>
+      <button  type="submit">Login</button>
+    </form>
+  </div>
+  <script>
+     function validateForm() {
+    const usernameError = document.getElementById('usernameError');
+      const passwordError = document.getElementById('passwordError');
+      
+      usernameError.textContent = '';
+      passwordError.textContent = '';
+
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('SecurityCode');
+      const username = usernameInput.value.trim();
+      const SecurityCode = passwordInput.value.trim();
+
+      if (!username || !SecurityCode) {
+        console.error('Username and password are required.');
+        return false;
+       
+    }
+  }
+  </script>
+</body>
+</html>
