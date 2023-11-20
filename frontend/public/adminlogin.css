@@ -1,0 +1,104 @@
+/* adminlogin.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin:  0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+  }
+  
+  .login-container {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 100px;
+    width: 500px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333333;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333333;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .error-message {
+    color: #ff0000;
+    margin-top: 10px;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 200px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  /* adminlogin.css */
+
+body {
+    min-height: 10vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  /* ... other styles ... */
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: auto; /* Push the button to the bottom */
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* ... other styles ... */
+  
+  
+  /* Add more styles as needed */
+  
