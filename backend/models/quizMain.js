@@ -1,8 +1,11 @@
-// models/quizMain.js
 const mongoose = require('mongoose');
-const Question = require('./question'); // Import the question model
+const Question = require('./question'); 
 
 const newQuizSchema = new mongoose.Schema({
+  subject: {
+    type:String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,
@@ -28,7 +31,6 @@ const newQuizSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Question', // Reference to the Question model
   }],
-  // Define any other fields you need for your schema
 });
 
 const newQuiz = mongoose.model('newQuiz', newQuizSchema);
