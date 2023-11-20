@@ -38,8 +38,8 @@ app.get('/questions',(req,res) => {
   res.render('questions');
 })
 
-app.get('/quizMain',(req,res) => {
-  res.render('quizMain');
+app.get('/adminQuizPage',(req,res) => {
+  res.render('adminQuizPage');
 })
 
 app.get('/subjectWiseQuiz',(req,res) => {
