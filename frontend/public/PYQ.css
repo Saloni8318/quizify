@@ -1,0 +1,47 @@
+/* studyMaterials.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: lightgray;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: black;
+}
+
+.subject-materials {
+    margin-bottom: 30px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.subject-materials {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color:white;
+    border-radius: 8px;
+    border-color: #23527c;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
