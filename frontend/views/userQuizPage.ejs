@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/userQuizPage.css">
+  <link rel="stylesheet" href="/cssFiles/userQuizPage.css">
   <title>User</title>
 </head>
 
 <body>
-  <%- include('header') -%>
 
-  <h2>Quiz List</h2>
+ <h1>Quizzes</h1>
+
   <ul>
     <% if (quizzes && quizzes.length> 0) { %>
       <% quizzes.forEach(quiz=> { %>
@@ -37,7 +37,7 @@
             <p>No quizzes available.</p>
             <% } %>
   </ul>
-
+  <a href="/layoutUser">Back to layout</a>
 </body>
 
 </html>
