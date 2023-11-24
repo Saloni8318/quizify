@@ -38,10 +38,12 @@ const fetchQuizzes = async (req, res) => {
 const deleteQuiz = async (req, res) => {
   try {
     const quizId = req.params.quizId;
+    const subject = req.params.subject;
+    console.log(subject);
 
     await newQuiz.findByIdAndDelete(quizId);
 
-    res.redirect('/auth/adminQuizPage');
+    res.redirect(`/auth/subjectWiseQuiz/${subject}`);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error deleting the quiz');

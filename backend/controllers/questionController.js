@@ -93,7 +93,7 @@ const editQuestion = async (req, res) => {
 
     // Perform the necessary updates
     question.questionText = questionText;
-    question.options = options; // Ensure options is an array of objects
+    question.options = options; 
     question.marks = marks;
 
     await question.save();
