@@ -1,16 +1,14 @@
 const express = require('express');
 const mongoose = require('./backend/db');
-const methodOverride = require('method-override');
 const path = require('path');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'frontend', 'views'));
 
-
-// Method override middleware
 app.use(methodOverride('_method'));
 
 app.use(express.json());
@@ -87,8 +85,28 @@ app.get('/quizQuestions', (req, res) => {
   res.render('quizQuestions')
 })
 
+app.get('/PYQ', (req, res) => {
+  res.render('PYQ')
+})
+
+app.get('/About', (req, res) => {
+  res.render('About')
+})
+
+app.get('/StudyMaterial', (req, res) => {
+  res.render('StudyMaterial')
+})
+
 app.get('/trueFalseQ', (req,res) => {
   res.render('trueFalseQ')
+})
+
+app.get('/userLogin', (req,res) => {
+  res.render('userLogin')
+})
+
+app.get('/adminLogin', (req,res) => {
+  res.render('adminLogin')
 })
 
 app.get('/', (req, res) => {
