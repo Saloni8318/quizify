@@ -1,4 +1,3 @@
-/* adminlogin.css */
 
 body {
     font-family: 'Arial', sans-serif;
@@ -60,7 +59,7 @@ body {
   button:hover {
     background-color: #45a049;
   }
-  /* adminlogin.css */
+
 
 body {
     min-height: 10vh;
@@ -81,8 +80,6 @@ body {
     text-align: center;
   }
   
-  /* ... other styles ... */
-  
   button {
     background-color: #4caf50;
     color: white;
@@ -90,15 +87,10 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: auto; /* Push the button to the bottom */
+    margin-top: auto; 
   }
   
   button:hover {
     background-color: #45a049;
   }
-  
-  /* ... other styles ... */
-  
-  
-  /* Add more styles as needed */
-  
+ 
