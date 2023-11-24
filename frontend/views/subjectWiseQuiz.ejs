@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/quizMain.css">
+    <link rel="stylesheet" href="/cssFiles/quizMain.css">
     <title>
         <%= subject %> Quizzes
     </title>
@@ -34,7 +34,7 @@
                     </p>
                     <!-- Add subject to the View Quiz link -->
                     <a href="/auth/adminQuizPage/<%= quiz._id %>/<%= quiz.subject %>">View Quiz</a>
-                    <form id="deleteQuizButton" action="/auth/adminQuizPage/<%= quiz._id %>?_method=DELETE" method="POST">
+                    <form id="deleteQuizButton" action="/auth/subjectWiseQuiz/<%= quiz.subject %>/<%= quiz._id %>?_method=DELETE" method="POST">
                         <button style="background-color: red; transition: background-color 0.3s;" type="submit" onmouseover="this.style.backgroundColor='lightcoral'" onmouseout="this.style.backgroundColor='red'">Delete</button>
                     </form>
                 </li>
@@ -72,7 +72,7 @@
 
                     <button type="submit" class="btn btn-primary">Create Quiz</button>
                 </form>
-                <!-- Add a link to go back to the main page -->
+               
                 <a href="/layoutAdmin" style="background-color: black;">Back to layout</a>
 </body>
 
