@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/quizQuestions.css">
+  <link rel="stylesheet" href="/cssFiles/quizQuestions.css">
   <title>Quiz: <%= quiz ? quiz.title : 'Untitled Quiz' %></title>
 </head>
 <body>
@@ -15,12 +15,12 @@
     <% questions.forEach((question, index) => { %>
       <div class="question-box">
       <li>
-        <p >Question <%= index + 1 %> :<par style="font-size: 20px;"> <%= question.questionText %></par> </p>
-        <!-- Corrected from 'question.text' -->
+        <p>Question <%= index + 1 %> :<par style="font-size: 20px;"> <%= question.questionText %></par> </p>
+       
         <p >Options:</p>
         <ul>
           <% question.options && question.options.forEach((option) => { %>
-            <li style="margin-left:65px; font-size: 18px;">&#8226; <%= option.text %></li> <!-- Adjusted from 'option.text' -->
+            <li style="margin-left:65px; font-size: 18px;">&#8226; <%= option.text %></li> 
           <% }); %>
         </ul>
         <p>Correct Option: <%= question.correctOption %></p>
@@ -35,16 +35,19 @@
           <input type="hidden" name="_method" value="POST">
           <button style="background-color: red; transition: background-color 0.3s;" type="submit" onmouseover="this.style.backgroundColor='lightcoral'" onmouseout="this.style.backgroundColor='red'">Delete</button>
         </form>
-
-      </li>
+        </li>
     </div>
+
+    <% }); %>
+
+  </ul>
         <form method="POST" action="/auth/quizQuestions/<%= quiz._id %>" onsubmit="return validateForm()">
           <div class="form-group">
             <label for="questionText">Enter Question:</label>
             <input type="text" id="questionText" name="questionText" required>
           </div>
       
-          <!-- Adjusted input names for each option -->
+          
           <div class="form-group">
             <label for="option1Text">Option 1:</label>
             <input type="text" id="option1Text" name="options[0][text]" required>
@@ -85,10 +88,8 @@
       
           <button type="submit" style="margin-left: 90%;">Save</button>
         </form>
-    <% }); %>
-  </ul>
-  <!-- Add a link to go back to the main page -->
-  <button type="submit" style="background-color: black; margin-left: 50px;" href="/auth/quizMain">Back</button>
+  
+  <a href="/auth/subjectWiseQuiz/<%= quiz.subject %>"> Back </a>
 
   <% } else { %>
     <p>No quiz found.</p>
@@ -122,7 +123,7 @@
         return false;
        }
 
-      // You can add additional validation if needed.
+     
 
       return true;
     }
